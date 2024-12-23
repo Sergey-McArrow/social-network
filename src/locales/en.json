@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "signInWithGoogle": "Sign in with Google",
+    "loggedInAs": "Logged in as",
+    "logout": "Logout"
+  },
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading..."
+  }
+}

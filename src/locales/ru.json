@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "signIn": "Войти",
+    "signInWithGoogle": "Войти через Google",
+    "loggedInAs": "Вы вошли как",
+    "logout": "Выйти"
+  },
+  "common": {
+    "welcome": "Добро пожаловать",
+    "loading": "Загрузка..."
+  }
+}

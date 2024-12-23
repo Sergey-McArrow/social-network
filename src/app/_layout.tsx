@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<Readonly<PropsWithChildren>> = ({ children }) => {
   return (
-    <html lang='en'>
+    <html>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
