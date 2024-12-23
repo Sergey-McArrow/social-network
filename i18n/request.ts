@@ -5,7 +5,7 @@ export const locales = ['en', 'ru'] as const
 export type Locale = (typeof locales)[number]
 
 export async function getMessages(locale: string) {
-  return (await import(`@/locales/${locale}.json`)).default
+  return (await import(`../src//locales/${locale}.json`)).default
 }
 
 export default getRequestConfig(async () => {

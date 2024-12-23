@@ -48,7 +48,7 @@ export default async function LocaleLayout({
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body>
+      <body className='antialiased w-[95%] mx-auto'>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>

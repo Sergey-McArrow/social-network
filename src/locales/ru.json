@@ -8,5 +8,8 @@
   "common": {
     "welcome": "Добро пожаловать",
     "loading": "Загрузка..."
+  },
+  "index": {
+    "bannerText": "С FreeVet помогать животным проще!"
   }
 }

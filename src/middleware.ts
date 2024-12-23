@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware'
 import { handleAuthRedirect } from './middlewares/auth'
 import { locales } from './i18n'
-import { NextResponse, NextRequest } from 'next/server'
+import { NextRequest } from 'next/server'
 
 const intlMiddleware = createMiddleware({
   locales,
@@ -10,18 +10,12 @@ const intlMiddleware = createMiddleware({
 })
 
 export default async function middleware(request: NextRequest) {
-  const intlResponse = await intlMiddleware(request)
-
-  if (intlResponse instanceof NextResponse) {
-    return intlResponse
-  }
-
   const authResponse = await handleAuthRedirect(request)
   if (authResponse) {
     return authResponse
   }
 
-  return intlResponse
+  return intlMiddleware(request)
 }
 
 export const config = {

@@ -19,9 +19,9 @@ export const handleAuthRedirect = async (req: NextRequest) => {
   const session = await auth()
   const isLoggedIn = !!session?.user
   const isAuthPage = req.nextUrl.pathname.includes('/auth/')
-  console.log({ session })
 
-  const locale = req.nextUrl.locale || 'en'
+  // Extract locale from the pathname
+  const locale = req.nextUrl.pathname.split('/')[1] || 'en'
 
   if (isAuthPage) {
     if (isLoggedIn) {
