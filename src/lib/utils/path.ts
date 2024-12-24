@@ -19,7 +19,7 @@ export const getBreadcrumbsFromPath = (pathname: string) => {
   const cleanPath = pathname.replace(/^https?:\/\/[^/]+/, '')
   const allSegments = cleanPath.split('/').filter(Boolean)
   const locale = allSegments[0] // Store locale for href generation
-  
+
   const segments = allSegments.filter(
     (segment, index) =>
       !segment.startsWith('[') && !segment.startsWith('(') && index !== 0
@@ -28,7 +28,6 @@ export const getBreadcrumbsFromPath = (pathname: string) => {
   return segments.map((segment, index) => {
     const href = '/' + [locale, ...segments.slice(0, index + 1)].join('/')
     const label = segment.charAt(0).toUpperCase() + segment.slice(1)
-    console.log({ href, label })
 
     return {
       href,

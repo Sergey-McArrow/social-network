@@ -26,14 +26,14 @@ const Layout: FC<PropsWithChildren> = async ({ children }) => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className='fixed top-0 z-10 flex h-16 bg-inherit w-full border-b shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 '>
-            <div className='flex items-center gap-2 px-4'>
-              <SidebarTrigger className='-ml-1' />
-              <Separator orientation='vertical' className='mr-2 h-4' />
+          <header className="fixed top-0 z-10 flex h-16 w-full shrink-0 items-center gap-2 border-b bg-inherit transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
                   </BreadcrumbItem>
                   {breadcrumbs.map(({ href, label, isLast }) => (
                     <Fragment key={href}>
@@ -51,7 +51,7 @@ const Layout: FC<PropsWithChildren> = async ({ children }) => {
               </Breadcrumb>
             </div>
           </header>
-          <div className='flex flex-1 flex-col gap-4 p-4 pt-0 h-svh mt-16 overflow-y-auto '>
+          <div className="mt-16 flex h-svh flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
             {children}
           </div>
         </SidebarInset>

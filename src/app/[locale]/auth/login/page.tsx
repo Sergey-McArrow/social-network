@@ -12,28 +12,28 @@ const LoginPage = async () => {
   const t = await getTranslations()
 
   return (
-    <div className='min-h-svh p-2 container mx-auto'>
-      <div className='flex items-center justify-between mb-8'>
-        <Image src={logoImg.src} alt='Logo' width={80} height={30} />
+    <div className="container mx-auto min-h-svh p-2">
+      <div className="mb-10 flex items-center justify-between">
+        <Image src={logoImg.src} alt="Logo" width={80} height={30} />
         <LanguageSwitcher />
       </div>
-      <div className='flex flex-col items-center justify-center h-[calc(100vh-40px)]'>
-        <div className='flex flex-col gap-8 md:gap-16 md:flex-row items-center justify-evenly'>
-          <div className='w-56 h-56 relative md:w-72 md:h-72'>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-evenly md:flex-row md:gap-16">
+          <div className="relative h-56 w-56 overflow-hidden rounded-2xl md:h-72 md:w-72">
             <Image
               src={bannerImg.src}
-              alt='Banner'
+              alt="Banner"
               fill
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-          <div>
-            <p className='w-48 sm:w-full text-xl mx-auto mb-6 text-center'>
+          <div className="mx-auto w-96 rounded-lg p-4 sm:w-1/2 md:h-72 md:shadow-md">
+            <p className="mx-auto w-56 p-2 text-center text-xl sm:w-full md:p-8">
               {t('index.bannerText')}
             </p>
-            <div className='p-8 rounded-lg shadow-md w-96 sm:w-full mx-auto'>
-              <h1 className='mb-8 text-xl text-center'>{t('auth.signIn')}</h1>
-              <div className='flex justify-between w-1/2 mx-auto'>
+            <div className="">
+              <h1 className="mb-8 text-center text-xl">{t('auth.signIn')}</h1>
+              <div className="mx-auto flex w-1/2 justify-between">
                 <form
                   action={async () => {
                     'use server'
@@ -43,7 +43,7 @@ const LoginPage = async () => {
                   <button>
                     <Image
                       src={googleImg.src}
-                      alt='Google'
+                      alt="Google"
                       width={48}
                       height={48}
                     />
@@ -52,10 +52,10 @@ const LoginPage = async () => {
                 <button>
                   <Image
                     src={facebookImg.src}
-                    alt='Facebook'
+                    alt="Facebook"
                     width={48}
                     height={48}
-                    className='grayscale cursor-not-allowed'
+                    className="cursor-not-allowed opacity-50"
                   />
                 </button>
               </div>

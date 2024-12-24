@@ -31,12 +31,12 @@ export const LanguageSwitcher = () => {
   }
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isPending}
         className={clsx(
-          'bg-white/10 hover:bg-white/20 border-2 border-transparent rounded-full w-10 h-10 flex justify-center items-center cursor-pointer transition-colors',
+          'flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-white/10 transition-colors hover:bg-white/20',
           isPending && 'opacity-50'
         )}
       >
@@ -45,19 +45,19 @@ export const LanguageSwitcher = () => {
           alt={currentLang.name}
           width={24}
           height={17}
-          className='rounded'
+          className="rounded"
         />
       </button>
 
       {isOpen && (
-        <div className='absolute right-0 mt-1 rounded-md shadow-lg border z-10 bg-background'>
+        <div className="absolute right-0 z-10 mt-1 rounded-md border bg-background shadow-lg">
           {languages.map((lang) => (
             <button
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
               disabled={isPending}
               className={clsx(
-                'w-10 h-10 flex justify-center items-center hover:bg-white/20 first:rounded-t-md last:rounded-b-md',
+                'flex h-10 w-10 items-center justify-center first:rounded-t-md last:rounded-b-md hover:bg-white/20',
                 isPending && 'opacity-50'
               )}
             >
@@ -66,7 +66,7 @@ export const LanguageSwitcher = () => {
                 alt={lang.name}
                 width={24}
                 height={17}
-                className='rounded'
+                className="rounded"
               />
             </button>
           ))}

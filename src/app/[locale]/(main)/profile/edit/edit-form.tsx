@@ -54,40 +54,40 @@ export function EditForm({ user }: EditFormProps) {
   }
 
   return (
-    <form action={handleSubmit} className='flex flex-col gap-8'>
-      <div className='flex items-center gap-8'>
-        <Avatar className='h-24 w-24'>
+    <form action={handleSubmit} className="flex flex-col gap-8">
+      <div className="flex items-center gap-8">
+        <Avatar className="h-24 w-24">
           <AvatarImage
             src={previewUrl ?? user?.userImage ?? user?.image ?? undefined}
             alt={user?.name ?? t('avatar')}
           />
-          <AvatarFallback className='text-lg'>
+          <AvatarFallback className="text-lg">
             {getInitials(user?.name)}
           </AvatarFallback>
         </Avatar>
-        <div className='grid w-full max-w-sm items-center gap-1.5'>
-          <Label htmlFor='avatar'>{t('changeAvatar')}</Label>
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="avatar">{t('changeAvatar')}</Label>
           <Input
-            id='avatar'
-            type='file'
-            name='avatar'
-            accept='image/*'
+            id="avatar"
+            type="file"
+            name="avatar"
+            accept="image/*"
             onChange={handleAvatarChange}
             disabled={isPending}
           />
           {state?.errors?.userImage && (
-            <p className='text-sm text-destructive'>
+            <p className="text-sm text-destructive">
               {state.errors.userImage.join(', ')}
             </p>
           )}
         </div>
       </div>
 
-      <div className='grid w-full max-w-sm items-center gap-1.5'>
-        <Label htmlFor='username'>{t('username')}</Label>
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="username">{t('username')}</Label>
         <Input
-          id='username'
-          name='username'
+          id="username"
+          name="username"
           defaultValue={user?.name ?? ''}
           placeholder={t('usernamePlaceholder')}
           required
@@ -95,59 +95,57 @@ export function EditForm({ user }: EditFormProps) {
           disabled={isPending}
         />
         {state?.errors?.name && (
-          <p className='text-sm text-destructive'>
+          <p className="text-sm text-destructive">
             {state.errors.name.join(', ')}
           </p>
         )}
       </div>
 
-      <div className='grid w-full max-w-sm items-center gap-1.5'>
-        <Label htmlFor='website'>{t('website')}</Label>
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="website">{t('website')}</Label>
         <Input
-          id='website'
-          name='website'
-          type='url'
-          placeholder='https://tailbook.me'
+          id="website"
+          name="website"
+          type="url"
+          placeholder="https://tailbook.me"
           defaultValue={user?.website ?? ''}
-          pattern='https://.*'
+          pattern="https://.*"
           disabled={isPending}
         />
         {state?.errors?.website && (
-          <p className='text-sm text-destructive'>
+          <p className="text-sm text-destructive">
             {state.errors.website.join(', ')}
           </p>
         )}
       </div>
 
-      <div className='grid w-full max-w-sm items-center gap-1.5'>
-        <Label htmlFor='about'>{t('about')}</Label>
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="about">{t('about')}</Label>
         <Input
-          id='about'
-          name='about'
+          id="about"
+          name="about"
           placeholder={t('aboutPlaceholder')}
           defaultValue={user?.bio ?? ''}
           disabled={isPending}
         />
         {state?.errors?.bio && (
-          <p className='text-sm text-destructive'>
+          <p className="text-sm text-destructive">
             {state.errors.bio.join(', ')}
           </p>
         )}
       </div>
 
-      <div className='flex justify-end gap-4'>
-        <Button 
-          variant='outline' 
-          type='button' 
-          formAction='/profile'
+      <div className="flex justify-end gap-4">
+        <Button
+          variant="outline"
+          type="button"
+          formAction="/profile"
           disabled={isPending}
         >
           {t('cancel')}
         </Button>
-        <Button type='submit' disabled={isPending}>
-          {isPending && (
-            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-          )}
+        <Button type="submit" disabled={isPending}>
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {t('save')}
         </Button>
       </div>

@@ -20,10 +20,6 @@
     "logout": "Log out",
     "signup": "Sign up"
   },
-  "profile": {
-    "title": "Profile",
-    "edit": "Edit Profile"
-  },
   "common": {
     "welcome": "Welcome",
     "loading": "Loading...",
@@ -36,13 +32,15 @@
     "create": "Create"
   },
   "index": {
-    "bannerText": "Helping animals is easier with FreeVet!"
+    "bannerText": "Join Tailgramm to share pet's stories with the world!"
   },
   "sidebar": {
     "platform": "Platform"
   },
   "profile": {
     "edit": "Edit Profile",
+    "title": "Profile",
+    "joined": "Joined",
     "avatar": "User avatar",
     "changeAvatar": "Change avatar",
     "username": "Username",
