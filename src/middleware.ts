@@ -1,12 +1,12 @@
 import createMiddleware from 'next-intl/middleware'
 import { handleAuthRedirect } from './middlewares/auth'
-import { locales } from './i18n'
 import { NextRequest } from 'next/server'
+import { locales } from '../i18n/request'
 
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale: 'en',
-  localePrefix: 'never',
+  // localePrefix: 'never',
 })
 
 export default async function middleware(request: NextRequest) {

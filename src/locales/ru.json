@@ -1,15 +1,44 @@
 {
+  "nav": {
+    "home": "Главная",
+    "search": "Поиск",
+    "explore": "Обзор",
+    "messages": "Сообщения",
+    "notifications": "Уведомления",
+    "create": "Создать",
+    "platform": "Платформа",
+    "profile": "Профиль",
+    "billing": "Оплата",
+    "upgrade": "Перейти на Pro",
+    "logout": "Выйти"
+  },
   "auth": {
     "signIn": "Войти",
     "signInWithGoogle": "Войти через Google",
     "loggedInAs": "Вы вошли как",
-    "logout": "Выйти"
+    "login": "Войти",
+    "logout": "Выйти",
+    "signup": "Регистрация"
+  },
+  "profile": {
+    "title": "Профиль",
+    "edit": "Редактировать профиль"
   },
   "common": {
     "welcome": "Добро пожаловать",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "create": "Создать"
   },
   "index": {
-    "bannerText": "С FreeVet помогать животным проще!"
+    "bannerText": "Помогать животным проще с FreeVet!"
+  },
+  "sidebar": {
+    "platform": "Платформа"
   }
 }

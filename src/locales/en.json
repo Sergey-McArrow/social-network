@@ -1,15 +1,44 @@
 {
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "explore": "Explore",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "create": "Create",
+    "platform": "Platform",
+    "profile": "Profile",
+    "billing": "Billing",
+    "upgrade": "Upgrade to Pro",
+    "logout": "Log out"
+  },
   "auth": {
     "signIn": "Sign In",
     "signInWithGoogle": "Sign in with Google",
     "loggedInAs": "Logged in as",
-    "logout": "Logout"
+    "login": "Log in",
+    "logout": "Log out",
+    "signup": "Sign up"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile"
   },
   "common": {
     "welcome": "Welcome",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create"
   },
   "index": {
     "bannerText": "Helping animals is easier with FreeVet!"
+  },
+  "sidebar": {
+    "platform": "Platform"
   }
 }

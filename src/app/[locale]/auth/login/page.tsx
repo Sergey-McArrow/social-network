@@ -8,22 +8,17 @@ import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 
-const LoginPage = async ({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) => {
-  const { locale } = await params
+const LoginPage = async () => {
   const t = await getTranslations()
 
   return (
-    <div className='min-h-screen p-2 container mx-auto'>
+    <div className='min-h-svh p-2 container mx-auto'>
       <div className='flex items-center justify-between mb-8'>
         <Image src={logoImg.src} alt='Logo' width={80} height={30} />
-        <LanguageSwitcher locale={locale} />
+        <LanguageSwitcher />
       </div>
-      <div>
-        <div className='flex flex-col gap-8 md:flex-row items-center justify-evenly'>
+      <div className='flex flex-col items-center justify-center h-[calc(100vh-40px)]'>
+        <div className='flex flex-col gap-8 md:gap-16 md:flex-row items-center justify-evenly'>
           <div className='w-56 h-56 relative md:w-72 md:h-72'>
             <Image
               src={bannerImg.src}
