@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/sidebar'
 import { getServerPathname, getBreadcrumbsFromPath } from '@/lib/utils/path'
 import { SessionProvider } from 'next-auth/react'
+import { Toaster } from '@/components/ui/sonner'
 
 const Layout: FC<PropsWithChildren> = async ({ children }) => {
   const pathname = await getServerPathname()
@@ -55,6 +56,7 @@ const Layout: FC<PropsWithChildren> = async ({ children }) => {
           </div>
         </SidebarInset>
       </SidebarProvider>
+      <Toaster />
     </SessionProvider>
   )
 }

@@ -40,5 +40,17 @@
   },
   "sidebar": {
     "platform": "Platform"
+  },
+  "profile": {
+    "edit": "Edit Profile",
+    "avatar": "User avatar",
+    "changeAvatar": "Change avatar",
+    "username": "Username",
+    "usernamePlaceholder": "Your display name",
+    "website": "Website",
+    "about": "About",
+    "aboutPlaceholder": "Tell us about yourself",
+    "cancel": "Cancel",
+    "save": "Save changes"
   }
 }
