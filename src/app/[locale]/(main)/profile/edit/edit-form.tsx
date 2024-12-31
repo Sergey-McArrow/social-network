@@ -136,12 +136,7 @@ export function EditForm({ user }: EditFormProps) {
       </div>
 
       <div className="flex justify-end gap-4">
-        <Button
-          variant="outline"
-          type="button"
-          formAction="/profile"
-          disabled={isPending}
-        >
+        <Button variant="outline" formAction="/profile" disabled={isPending}>
           {t('cancel')}
         </Button>
         <Button type="submit" disabled={isPending}>

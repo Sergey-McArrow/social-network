@@ -5,6 +5,7 @@ import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { uploadFile } from '@/lib/gcloud'
 
 export type ProfileFormData = {
   name: string
@@ -67,8 +68,10 @@ export async function updateProfile(
   const avatarFile = formData.get('avatar') as File
   if (avatarFile?.size > 0) {
     try {
-      data.userImage = await uploadImage(avatarFile)
-    } catch {
+      data.userImage = await uploadFile(avatarFile, 'avatars')
+    } catch (err) {
+      console.log(err)
+
       return {
         errors: {
           userImage: ['Failed to upload avatar'],
@@ -92,6 +95,7 @@ export async function updateProfile(
       errors,
     }
   }
+  console.log({ data })
 
   try {
     await prisma.user.update({
@@ -107,11 +111,9 @@ export async function updateProfile(
     return {
       message: 'Profile updated successfully',
     }
-  } catch {
+  } catch (err) {
     return {
-      errors: {
-        _form: ['Failed to update profile'],
-      },
+      errors,
     }
   }
 }

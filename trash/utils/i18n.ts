@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import en from '../locales/en.json'
-import ru from '../locales/ru.json'
+import en from '../../src/locales/en.json'
+import ru from '../../src/locales/ru.json'
 
 const translations = {
   en,

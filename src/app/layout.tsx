@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: 'TailGramm',
   description: 'TailGramm is a social network for your pets.',
 }
-const RootLayout: FC<PropsWithChildren> = ({ children }) => (
+const RootLayout: FC<PropsWithChildren> = async ({ children }) => (
   <html lang="en">
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       {children}
