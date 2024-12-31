@@ -3,8 +3,6 @@
 import { auth } from '@/auth'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
-import { promises as fs } from 'fs'
-import path from 'path'
 import { uploadFile } from '@/lib/gcloud'
 
 export type ProfileFormData = {
@@ -23,26 +21,6 @@ export type ProfileFormState = {
     _form?: string[]
   }
   message?: string
-}
-
-async function uploadImage(file: File): Promise<string> {
-  try {
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
-    const uniqueFilename = `${Date.now()}-${file.name}`
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'avatars')
-    const filePath = path.join(uploadDir, uniqueFilename)
-
-    await fs.mkdir(uploadDir, { recursive: true })
-
-    await fs.writeFile(filePath, buffer)
-
-    return `/uploads/avatars/${uniqueFilename}`
-  } catch (err) {
-    console.error('Error uploading image:', err)
-    throw new Error('Failed to upload image')
-  }
 }
 
 export async function updateProfile(
@@ -112,6 +90,8 @@ export async function updateProfile(
       message: 'Profile updated successfully',
     }
   } catch (err) {
+    console.log(err)
+
     return {
       errors,
     }
