@@ -20,6 +20,7 @@ import { addNewPostAction } from '@/actions/addNewPost'
 import { useActionState } from 'react'
 import { Loader2Icon, Trash2Icon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 
 export const AddPostDialog = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -76,7 +77,7 @@ export const AddPostDialog = () => {
                 <Trash2Icon />
               </Button>
             </div>
-            <img
+            <Image
               src={imageUrl}
               alt="Preview"
               width={200}

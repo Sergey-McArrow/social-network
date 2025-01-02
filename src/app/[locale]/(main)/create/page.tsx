@@ -4,11 +4,13 @@ import { PostCard } from '@/components/ui/post-card'
 import { prisma } from '@/prisma'
 import { postQuery } from '@/prisma/query'
 import { getTranslations } from 'next-intl/server'
+
 const CreatePage = async () => {
   const session = await auth()
   const t = await getTranslations('Post')
   const posts = await prisma.post.findMany({
     where: { authorId: session?.user?.id },
+    orderBy: { createdAt: 'desc' },
     ...postQuery,
   })
   return (
