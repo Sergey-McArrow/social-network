@@ -21,7 +21,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   if (!session?.user) return null
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} className="max-h-svh">
       <SidebarHeader className="w-full py-2">
         <div className="flex items-center justify-between gap-2">
           <Image src={logoImg.src} alt="Logo" width={80} height={30} />

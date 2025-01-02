@@ -13,7 +13,19 @@ declare module 'next-auth' {
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
-  providers: [Google],
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
+    })
+  ],
   callbacks: {
     jwt({ token, user }) {
       if (user) {
@@ -28,19 +40,12 @@ export const authConfig: NextAuthConfig = {
       return session
     },
   },
-
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+  },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt'
   },
-  cookies: {
-    sessionToken: {
-      name: 'next-auth.session-token',
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-      },
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 }
