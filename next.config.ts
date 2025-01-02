@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'storage.cloud.google.com',
         port: '',
-        pathname: '/**',
+        pathname: '/tail-gramm/**',
         search: '',
       },
     ],

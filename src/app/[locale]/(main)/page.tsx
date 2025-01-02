@@ -1,50 +1,18 @@
-import { auth } from '@/auth'
-import { getTranslations } from 'next-intl/server'
-
+import { postQuery } from '@/prisma/query'
+import { prisma } from '@/prisma'
+import { PostCard } from '@/components/ui/post-card'
 const HomePage = async () => {
-  const session = await auth()
-  const t = await getTranslations()
-
+  const posts = await prisma.post.findMany({
+    ...postQuery,
+  })
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        {session?.user && (
-          <>
-            <p>
-              {t('auth.loggedInAs')} {session.user.email}
-            </p>
-          </>
-        )}
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque
-          necessitatibus ex iste ullam esse ipsa nemo voluptates magni delectus
-          porro officia, voluptatum sed exercitationem nesciunt obcaecati
-          ratione a. Optio officiis blanditiis nesciunt voluptatibus laborum
-          labore mollitia incidunt doloremque nihil suscipit deleniti, modi quam
-          expedita nulla doloribus quae amet ab repellendus nam obcaecati
-          veritatis! Inventore distinctio obcaecati esse ipsum quis dolores fuga
-          ex beatae itaque voluptatem, aliquam eos dolorem quia expedita impedit
-          repellat? Ratione impedit delectus deserunt culpa alias perspiciatis
-          nisi modi aperiam vero. Eaque sapiente aperiam, blanditiis distinctio
-          nam voluptates pariatur velit, ullam incidunt ad vel enim quibusdam
-          facere, quae recusandae perspiciatis. Veritatis error eveniet iure
-          reprehenderit natus magni dolorem vero, praesentium laboriosam soluta.
-          Aperiam, officiis nihil ad qui repudiandae nisi quaerat dolore.
-          Asperiores labore corrupti accusantium possimus ducimus ea blanditiis
-          amet sint placeat totam laborum voluptas vitae quisquam facere
-          incidunt aperiam nesciunt, vero fugit modi quas et necessitatibus?
-          Maiores doloribus hic dolores iusto! Libero velit necessitatibus nobis
-          porro vero saepe quae officiis laborum omnis culpa ipsum architecto
-          eaque, excepturi magnam unde molestiae esse facere odit, debitis
-          incidunt sed quam! Architecto a vero beatae. Temporibus delectus
-          corrupti provident quisquam recusandae obcaecati! Quam quisquam
-          possimus molestiae dolorem saepe dolorum, obcaecati quia? Magni
-          placeat illo fuga neque possimus maxime hic ullam mollitia? Natus
-          libero, odio distinctio reiciendis quisquam cum dolores quam amet
-          velit consequatur.
-        </p>
-      </main>
-    </div>
+    <section className="mx-auto space-y-4 p-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        {posts.map((post) => (
+          <PostCard key={post.id} {...post} />
+        ))}
+      </div>
+    </section>
   )
 }
 

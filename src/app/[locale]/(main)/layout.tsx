@@ -1,5 +1,5 @@
 import { FC, Fragment, PropsWithChildren } from 'react'
-import { AppSidebar } from '@/components/app-sidebar'
+import { AppSidebar } from '@/components/ui/app-sidebar'
 import {
   Breadcrumb,
   BreadcrumbItem,

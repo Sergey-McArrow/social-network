@@ -66,5 +66,8 @@
     "file": "File",
     "upload": "Upload",
     "imageUploaded": "Image uploaded successfully"
+  },
+  "Post": {
+    "yourPost": "Your Post"
   }
 }

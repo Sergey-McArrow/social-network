@@ -11,8 +11,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { FileUploader } from './ui/file-uploader'
-import { Textarea } from './ui/textarea'
+import { FileUploader } from './file-uploader'
+import { Textarea } from './textarea'
 import { useEffect, useState } from 'react'
 import { deleteFile } from '@/lib/gcloud'
 import { toast } from 'sonner'
