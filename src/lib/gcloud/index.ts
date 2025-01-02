@@ -2,14 +2,20 @@
 import { Storage } from '@google-cloud/storage'
 import { v4 as uuidv4 } from 'uuid'
 const projectId = process.env.GOOGLE_STORAGE_PROJECT_ID
-const keyFilename = process.env.GOOGLE_STORAGE_KEY_FILE
+const clientEmail = process.env.GOOGLE_STORAGE_CLIENT_EMAIL
+const privateKey = process.env.GOOGLE_STORAGE_PRIVATE_KEY
 const bucketName = process.env.GOOGLE_STORAGE_BUCKET
-if (!projectId || !keyFilename || !bucketName) {
+
+if (!projectId || !clientEmail || !privateKey || !bucketName) {
   throw new Error('Missing environment variables')
 }
+
 const storage = new Storage({
   projectId,
-  keyFilename,
+  credentials: {
+    client_email: clientEmail,
+    private_key: privateKey.replace(/\\n/g, '\n'),
+  },
 })
 
 export const uploadFile = async (file: File, directory: string) => {
