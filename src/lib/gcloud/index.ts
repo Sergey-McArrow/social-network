@@ -46,3 +46,15 @@ export const uploadFile = async (file: File, directory: string) => {
     )
   }
 }
+export const deleteFile = async (fileUrl: string, directory: string) => {
+  try {
+    const bucket = storage.bucket(bucketName)
+    const fileName = fileUrl.split('/').pop()
+    await bucket.file(`${directory}/${fileName}`).delete()
+  } catch (error) {
+    console.error('Error deleting file:', JSON.stringify(error, null, 2))
+    throw new Error(
+      error instanceof Error ? error.message : 'Failed to delete file'
+    )
+  }
+}

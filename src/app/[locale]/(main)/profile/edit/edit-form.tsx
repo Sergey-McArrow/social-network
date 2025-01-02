@@ -6,7 +6,7 @@ import { getInitials } from '@/lib/utils/helpers'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { updateProfile } from './actions'
+import { updateProfileAction } from './actions'
 import type { User } from '@prisma/client'
 import { useActionState } from 'react'
 import { useTranslations } from 'next-intl'
@@ -20,7 +20,7 @@ type EditFormProps = {
 }
 
 export function EditForm({ user }: EditFormProps) {
-  const [state, formAction] = useActionState(updateProfile, null)
+  const [state, formAction] = useActionState(updateProfileAction, null)
   const [isPending, startTransition] = useTransition()
   const t = useTranslations('profile')
   const router = useRouter()

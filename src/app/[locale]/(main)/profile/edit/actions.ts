@@ -3,7 +3,7 @@
 import { auth } from '@/auth'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
-import { uploadFile } from '@/lib/gcloud'
+import { deleteFile, uploadFile } from '@/lib/gcloud'
 
 export type ProfileFormData = {
   name: string
@@ -23,7 +23,7 @@ export type ProfileFormState = {
   message?: string
 }
 
-export async function updateProfile(
+export async function updateProfileAction(
   _prevState: ProfileFormState | null,
   formData: FormData
 ): Promise<ProfileFormState> {
@@ -36,7 +36,14 @@ export async function updateProfile(
       },
     }
   }
-
+  const userFromDb = await prisma.user.findUnique({
+    where: {
+      email: session.user.email,
+    },
+    select: {
+      userImage: true,
+    },
+  })
   const data: ProfileFormData = {
     name: formData.get('username') as string,
     website: formData.get('website') as string,
@@ -46,6 +53,9 @@ export async function updateProfile(
   const avatarFile = formData.get('avatar') as File
   if (avatarFile?.size > 0) {
     try {
+      console.log(userFromDb?.userImage)
+      if (userFromDb?.userImage)
+        await deleteFile(userFromDb?.userImage, 'avatars')
       data.userImage = await uploadFile(avatarFile, 'avatars')
     } catch (err) {
       console.log(err)
