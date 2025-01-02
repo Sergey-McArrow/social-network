@@ -19,6 +19,7 @@
     "@auth/prisma-adapter": "^2.7.4",
     "@google-cloud/storage": "^7.14.0",
     "@prisma/client": "^6.1.0",
+    "@radix-ui/react-aspect-ratio": "^1.1.1",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-collapsible": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",

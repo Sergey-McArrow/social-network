@@ -25,7 +25,7 @@ export function ProfileView({ user }: ProfileViewProps) {
           <AvatarFallback>{user.name?.[0]}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col-reverse items-center justify-between gap-4 md:flex-row">
             <h2 className="text-2xl font-bold">{user.name}</h2>
             <Button variant="outline" size="sm" asChild>
               <Link href="/profile/edit">

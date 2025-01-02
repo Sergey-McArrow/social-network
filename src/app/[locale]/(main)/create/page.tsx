@@ -15,7 +15,7 @@ const CreatePage = async () => {
     <section className="mx-auto space-y-4 p-4">
       <AddPostDialog />
       <h2 className="text-center text-2xl font-bold">{t('yourPost')}</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid gap-4 md:grid-cols-2">
         {posts.map((post) => (
           <PostCard key={post.id} {...post} />
         ))}

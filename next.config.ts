@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -21,9 +22,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'storage.cloud.google.com',
-        port: '',
         pathname: '/tail-gramm/**',
-        search: '',
       },
     ],
   },

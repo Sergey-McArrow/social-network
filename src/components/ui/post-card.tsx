@@ -7,6 +7,8 @@ import { TPost } from '@/types/models'
 import { formatDate, getInitials } from '@/lib/utils/helpers'
 import { addLikeAction } from '@/actions/addLike'
 import { deleteLikeAction } from '@/actions/deleteLike'
+import Image from 'next/image'
+import { AspectRatio } from './aspect-ratio'
 
 export const PostCard: FC<TPost> = ({
   id,
@@ -37,7 +39,15 @@ export const PostCard: FC<TPost> = ({
           </Button>
         ) : null}
       </div>
-      <img src={imageUrl} alt={content} />
+      <AspectRatio ratio={4 / 5} className="max-h-96 overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={content}
+          loading="lazy"
+          fill
+          className="rounded-md object-cover"
+        />
+      </AspectRatio>
       <div className="flex items-center justify-between">
         <div className="mt-2 flex items-center gap-2 p-2">
           <form action={liked ? deleteLikeAction : addLikeAction}>
