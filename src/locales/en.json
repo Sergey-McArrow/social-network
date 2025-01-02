@@ -50,5 +50,21 @@
     "aboutPlaceholder": "Tell us about yourself",
     "cancel": "Cancel",
     "save": "Save changes"
+  },
+  "addPost": {
+    "newPost": "New Post",
+    "createPost": "Create a new post here. Click save when you're done.",
+    "content": "Content",
+    "share": "Share",
+    "imageDeleted": "Image deleted successfully",
+    "imageDeleteError": "Error deleting image",
+    "postCreated": "Post created successfully",
+    "postCreateError": "Failed to create post",
+    "preview": "Preview",
+    "dragAndDrop": "Drag and drop a file or click to browse",
+    "imageType": "image",
+    "file": "File",
+    "upload": "Upload",
+    "imageUploaded": "Image uploaded successfully"
   }
 }

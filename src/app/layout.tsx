@@ -2,6 +2,7 @@ import { FC, PropsWithChildren } from 'react'
 import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Metadata } from 'next'
+import { ThemeProvider } from '@/providers/theme-provider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,7 +23,14 @@ export const metadata: Metadata = {
 const RootLayout: FC<PropsWithChildren> = async ({ children }) => (
   <html lang="en">
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      {children}
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+      </ThemeProvider>
     </body>
   </html>
 )

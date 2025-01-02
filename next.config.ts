@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
         pathname: '/a/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.cloud.google.com',
+        port: '',
+        pathname: '/**',
+        search: '',
+      },
     ],
   },
   trailingSlash: true,
