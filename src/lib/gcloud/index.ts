@@ -31,13 +31,13 @@ export const uploadFile = async (file: File, directory: string) => {
     const buffer = Buffer.from(arrayBuffer)
     const webpBuffer = await sharp(buffer).webp({ quality: 80 }).toBuffer()
 
-    await fileInstance.save(webpBuffer, {
+    const res = await fileInstance.save(webpBuffer, {
       metadata: {
         contentType: fileType,
       },
     })
 
-    return `https://storage.cloud.google.com/${bucketName}/${webpFileName}`
+    return `https://storage.googleapis.com/${bucketName}/${webpFileName}`
   } catch (error) {
     console.error('Error uploading file:', JSON.stringify(error, null, 2))
     throw new Error(

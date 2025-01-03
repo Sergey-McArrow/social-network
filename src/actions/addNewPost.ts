@@ -3,6 +3,7 @@
 import { auth } from '@/auth'
 import { z } from 'zod'
 import { prisma } from '@/prisma'
+import { revalidatePath } from 'next/cache'
 
 const PostSchema = z.object({
   imageUrl: z.string().url(),
@@ -13,10 +14,10 @@ type PostInput = z.infer<typeof PostSchema>
 
 export async function addNewPostAction(
   _state: {
-    status: string;
-    message?: string;
-    data?: PostInput;
-    errors?: { message: string }[];
+    status: string
+    message?: string
+    data?: PostInput
+    errors?: { message: string }[]
   } | null,
   formData: FormData
 ) {
@@ -41,7 +42,7 @@ export async function addNewPostAction(
         authorId: session.user.id,
       },
     })
-
+    revalidatePath('/create')
     return {
       status: 'success',
       data: validatedFields,
