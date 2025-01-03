@@ -5,12 +5,12 @@ import { Button } from './button'
 import { Eye, Heart, MessageCircle, Send } from 'lucide-react'
 import { TPost } from '@/types/models'
 import { formatDate, getInitials } from '@/lib/utils/helpers'
-import { addLikeAction } from '@/actions/addLike'
-import { deleteLikeAction } from '@/actions/deleteLike'
+import { addOrRemoveLikeAction } from '@/actions/addOrRemoveLike'
 import Image from 'next/image'
 import { AspectRatio } from './aspect-ratio'
+import { ActionBtn } from './action-btn'
 
-export const PostCard: FC<TPost> = ({
+export const PostCard: FC<TPost> = async ({
   id,
   author,
   content,
@@ -22,6 +22,7 @@ export const PostCard: FC<TPost> = ({
 }) => {
   const liked = likes.some((like) => like.authorId === author.id)
   const isOwnPost = id === author.id
+
   return (
     <Card>
       <div className="flex items-center gap-4 px-2 py-4">
@@ -50,16 +51,20 @@ export const PostCard: FC<TPost> = ({
       </AspectRatio>
       <div className="flex items-center justify-between">
         <div className="mt-2 flex items-center gap-2 p-2">
-          <form action={liked ? deleteLikeAction : addLikeAction}>
-            <input type="hidden" name="postId" value={id} />
-            <button type="submit">
-              <Heart
-                fill={liked ? 'red' : 'none'}
-                stroke={liked ? 'red' : 'white'}
-                className="-mb-1.5"
-              />
-            </button>
-          </form>
+          <ActionBtn
+            action={addOrRemoveLikeAction}
+            fields={[
+              { name: 'postId', value: id },
+              { name: 'liked', value: String(liked) },
+            ]}
+          >
+            <Heart
+              fill={liked ? 'red' : 'none'}
+              stroke={liked ? 'red' : 'white'}
+              className="-mb-2"
+            />
+          </ActionBtn>
+
           <button>
             <MessageCircle />
           </button>
