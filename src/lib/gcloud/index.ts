@@ -31,7 +31,7 @@ export const uploadFile = async (file: File, directory: string) => {
     const buffer = Buffer.from(arrayBuffer)
     const webpBuffer = await sharp(buffer).webp({ quality: 80 }).toBuffer()
 
-    const res = await fileInstance.save(webpBuffer, {
+    await fileInstance.save(webpBuffer, {
       metadata: {
         contentType: fileType,
       },
