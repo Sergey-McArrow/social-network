@@ -4,7 +4,10 @@ import { ProfileView } from '@/components/profile/profile-view'
 
 const ProfilePage = async () => {
   const session = await auth()
-
+  console.log('Session:', session)
+  if (!session?.user?.email) {
+    return <div>You must be logged in to view this page.</div>
+  }
   const user = await prisma.user.findUnique({
     where: {
       email: session?.user.email || '',
