@@ -1,7 +1,6 @@
 import { auth } from '@/auth'
 import { prisma } from '@/prisma'
 import { ProfileView } from '@/components/profile/profile-view'
-import { redirect } from 'next/navigation'
 
 const ProfilePage = async () => {
   const session = await auth()

@@ -1,4 +1,4 @@
-import { EditForm } from '../../../../../components/profile/edit-profile-form'
+import { EditForm } from '@/components/profile/edit-profile-form'
 import { getTranslations } from 'next-intl/server'
 import { auth } from '@/auth'
 import { prisma } from '@/prisma'
