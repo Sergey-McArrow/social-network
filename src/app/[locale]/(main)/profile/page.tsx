@@ -5,14 +5,10 @@ import { redirect } from 'next/navigation'
 
 const ProfilePage = async () => {
   const session = await auth()
-  
-  if (!session?.user?.email) {
-    redirect('/auth/login')
-  }
 
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      email: session?.user.email || '',
     },
   })
 
