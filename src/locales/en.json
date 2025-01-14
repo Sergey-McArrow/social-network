@@ -51,6 +51,18 @@
     "cancel": "Cancel",
     "save": "Save changes"
   },
+  "messages": {
+    "title": "Messages",
+    "conversations": "Conversations",
+    "select_conversation": "Select a conversation to start chatting",
+    "no_messages": "No messages yet. Start the conversation!",
+    "type_message": "Type your message here...",
+    "send": "Send",
+    "error_sending": "Error sending message",
+    "error_loading": "Error loading messages",
+    "you": "You",
+    "partner": "Partner"
+  },
   "addPost": {
     "newPost": "New Post",
     "createPost": "Create a new post here. Click save when you're done.",

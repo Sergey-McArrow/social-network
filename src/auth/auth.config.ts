@@ -34,14 +34,14 @@ export const authConfig: NextAuthConfig = {
       return token
     },
     session({ session, token }) {
-      if (typeof token.id === 'string' && token.id) {
-        session.user.id = token.id
+      if (session.user) {
+        session.user.id = token.id as string
       }
       return session
-    },
+    }
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth/login',
     error: '/auth/error',
   },
   session: {

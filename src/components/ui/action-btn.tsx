@@ -18,7 +18,7 @@ export const ActionBtn: FC<TActionBtnProps> = ({
   fields,
 }) => {
   const [formState, formAction, isPending] = useActionState(action, null)
-  console.log({ fields })
+  // console.log({ fields })
 
   return (
     <form action={formAction} className="relative">
