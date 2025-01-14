@@ -2,6 +2,8 @@ import { ChatRoom } from '@/components/messages/chat-room'
 import { getTranslations } from 'next-intl/server'
 import { prisma } from '@/prisma'
 
+export const dynamic = 'force-dynamic'
+
 const MessagesPage = async () => {
   const t = await getTranslations('messages')
   const users = await prisma.user.findMany()
