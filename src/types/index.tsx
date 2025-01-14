@@ -13,8 +13,16 @@ export interface TMessageItemProps {
   partnerImage?: string | null
 }
 
+export interface TUserStatus {
+  status: 'online' | 'offline'
+  lastSeen: string
+}
+
+export interface TUserWithStatus extends User, TUserStatus {}
+
 export interface TUserListProps {
-  users: User[]
+  users: TUserWithStatus[]
   currentUserId?: string
   onSelectUser: (user: User) => void
+  loading?: boolean
 }

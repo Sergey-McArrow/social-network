@@ -12,12 +12,14 @@ import {
   push,
   orderByChild,
   onValue,
+  onDisconnect,
+  update,
 } from 'firebase/database'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '../ui/card'
 import { Input } from '../ui/input'
-import { TChatMessage } from '@/types'
+import { TChatMessage, TUserWithStatus } from '@/types'
 import { MessageItem } from './message-item'
 import { UserList } from './user-list'
 
@@ -34,6 +36,9 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState<TChatMessage[]>([])
   const [chatPartner, setChatPartner] = useState<User | null>(null)
+  const [usersOnline, setUsersOnline] = useState<TUserWithStatus[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const getOrCreateChat = async (user: User) => {
     if (!session?.user?.id) return
@@ -93,6 +98,67 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   }, [messages])
 
   useEffect(() => {
+    if (!session?.user?.id) return
+
+    const userStatusRef = ref(database, `users/${session.user.id}`)
+    const userStatusDatabaseRef = ref(database, '.info/connected')
+
+    const updateUserStatus = (status: 'online' | 'offline') => {
+      update(userStatusRef, {
+        status,
+        lastSeen: new Date().toISOString(),
+      })
+    }
+
+    const unsubscribe = onValue(userStatusDatabaseRef, (snapshot) => {
+      if (snapshot.val() === true) {
+        updateUserStatus('online')
+
+        onDisconnect(userStatusRef).update({
+          status: 'offline',
+          lastSeen: new Date().toISOString(),
+        })
+      }
+    })
+
+    return () => {
+      unsubscribe()
+      updateUserStatus('offline')
+    }
+  }, [session?.user?.id])
+
+  useEffect(() => {
+    const usersRef = ref(database, 'users')
+    const usersQuery = query(usersRef)
+
+    setLoading(true)
+    const unsubscribe = onValue(
+      usersQuery,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const usersData = snapshot.val()
+          const usersArray = Object.entries(usersData).map(([id, value]) => ({
+            ...(value as TUserWithStatus),
+            id,
+          }))
+          setUsersOnline(usersArray.filter((u) => u.status === 'online'))
+        } else {
+          setUsersOnline([])
+        }
+        setLoading(false)
+        setError(null)
+      },
+      (error) => {
+        console.error('Error fetching users:', error)
+        setError('Failed to fetch users status')
+        setLoading(false)
+      }
+    )
+
+    return () => unsubscribe()
+  }, [])
+
+  useEffect(() => {
     if (!chatRoom) return
 
     const messagesRef = ref(database, `chats/${chatRoom}/messages`)
@@ -121,13 +187,29 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
 
   if (!session) return null
 
+  if (error) {
+    return (
+      <div className="rounded-lg bg-destructive/10 p-4 text-destructive">
+        {error}
+      </div>
+    )
+  }
+
   return (
     <section className="rounded-lg bg-card p-4 md:col-span-2">
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-4">
         <UserList
-          users={users}
+          users={users.map((u) => {
+            const onlineUser = usersOnline.find((online) => online.id === u.id)
+            return {
+              ...u,
+              status: onlineUser ? 'online' : 'offline',
+              lastSeen: onlineUser?.lastSeen ?? new Date().toISOString(),
+            }
+          })}
           currentUserId={session.user.id}
           onSelectUser={getOrCreateChat}
+          loading={loading}
         />
 
         {chatRoom ? (

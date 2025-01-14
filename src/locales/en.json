@@ -53,15 +53,21 @@
   },
   "messages": {
     "title": "Messages",
+    "contacts": "Contacts",
     "conversations": "Conversations",
+    "online": "Online",
+    "lastSeen": "Last seen: {date}",
+    "partner": "Chat Partner",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "noMessages": "No messages yet",
+    "startConversation": "Start a conversation",
     "select_conversation": "Select a conversation to start chatting",
     "no_messages": "No messages yet. Start the conversation!",
     "type_message": "Type your message here...",
-    "send": "Send",
     "error_sending": "Error sending message",
     "error_loading": "Error loading messages",
-    "you": "You",
-    "partner": "Partner"
+    "you": "You"
   },
   "addPost": {
     "newPost": "New Post",

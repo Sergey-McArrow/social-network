@@ -53,7 +53,10 @@
   },
   "messages": {
     "title": "Сообщения",
+    "contacts": "Контакты",
     "conversations": "Диалоги",
+    "online": "В сети",
+    "lastSeen": "Был(а) в сети: {date}",
     "select_conversation": "Выберите диалог, чтобы начать общение",
     "no_messages": "Пока нет сообщений. Начните общение!",
     "type_message": "Введите ваше сообщение...",
@@ -61,7 +64,10 @@
     "error_sending": "Ошибка при отправке сообщения",
     "error_loading": "Ошибка при загрузке сообщений",
     "you": "Вы",
-    "partner": "Собеседник"
+    "partner": "Собеседник",
+    "typeMessage": "Введите сообщение...",
+    "noMessages": "Нет сообщений",
+    "startConversation": "Начать диалог"
   },
   "addPost": {
     "newPost": "Новый пост",
