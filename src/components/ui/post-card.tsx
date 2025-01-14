@@ -1,3 +1,5 @@
+'use client'
+
 import { FC } from 'react'
 import { Card } from './card'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
@@ -9,8 +11,10 @@ import { addOrRemoveLikeAction } from '@/actions/addOrRemoveLike'
 import Image from 'next/image'
 import { AspectRatio } from './aspect-ratio'
 import { ActionBtn } from './action-btn'
+import { useSession } from 'next-auth/react'
+import { Skeleton } from './skeleton'
 
-export const PostCard: FC<TPost> = async ({
+export const PostCard: FC<TPost> = ({
   id,
   author,
   content,
@@ -20,8 +24,16 @@ export const PostCard: FC<TPost> = async ({
   likes,
   createdAt,
 }) => {
-  const liked = likes.some((like) => like.authorId === author.id)
-  const isOwnPost = id === author.id
+  const { data: session, status } = useSession()
+  const liked =
+    status === 'authenticated' &&
+    likes.some((like) => like.authorId === session?.user?.id)
+  const isOwnPost =
+    status === 'authenticated' && author.id === session?.user?.id
+
+  if (status === 'loading') {
+    return <PostCardSkeleton />
+  }
 
   return (
     <Card>
@@ -31,7 +43,7 @@ export const PostCard: FC<TPost> = async ({
           <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
         </Avatar>
         <p> {author.name}</p>
-        <p className="text-xs md:text-sm">
+        <p className="truncate text-xs md:text-sm">
           • {formatDate(createdAt.toISOString())} •
         </p>
         {isOwnPost ? (
@@ -102,6 +114,29 @@ export const PostCard: FC<TPost> = async ({
           ))}
         </div>
       ) : null}
+    </Card>
+  )
+}
+const PostCardSkeleton = () => {
+  return (
+    <Card>
+      <div className="flex items-center gap-4 px-2 py-4">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <Skeleton className="h-4 w-32" />
+      </div>
+      <Skeleton className="h-64 w-full" />
+      <div className="space-y-2 p-4">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+      </div>
+      <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex gap-4">
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+        </div>
+        <Skeleton className="h-4 w-24" />
+      </div>
     </Card>
   )
 }

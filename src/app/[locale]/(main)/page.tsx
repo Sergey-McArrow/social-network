@@ -6,6 +6,7 @@ const HomePage = async () => {
     orderBy: { createdAt: 'desc' },
     ...postQuery,
   })
+
   return (
     <section className="mx-auto space-y-4 p-4">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

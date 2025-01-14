@@ -3,9 +3,9 @@ import { FC, PropsWithChildren, useActionState } from 'react'
 
 type TActionBtnProps = {
   action: (
-    _prevState: unknown,
+    state: { message: string; data?: unknown },
     formData: FormData
-  ) => Promise<{ message: string }>
+  ) => Promise<{ message: string; data?: unknown }>
   fields: {
     name: string
     value: string
@@ -17,8 +17,9 @@ export const ActionBtn: FC<TActionBtnProps> = ({
   children,
   fields,
 }) => {
-  const [formState, formAction, isPending] = useActionState(action, null)
-  // console.log({ fields })
+  const [formState, formAction, isPending] = useActionState(action, {
+    message: '',
+  })
 
   return (
     <form action={formAction} className="relative">
@@ -28,7 +29,7 @@ export const ActionBtn: FC<TActionBtnProps> = ({
       <button type="submit" disabled={isPending}>
         {children}
       </button>
-      {formState?.message.startsWith('Error') && (
+      {formState?.message?.startsWith('Error') && (
         <p className="absolute bottom-full left-0 w-max text-xs font-medium text-red-500">
           {formState.message}
         </p>

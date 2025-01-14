@@ -8,9 +8,14 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en',
 })
 
-const PUBLIC_PATHS = ['/auth/login', '/auth/error']
+const PUBLIC_PATHS = ['/auth', '/api/auth']
 
 async function middleware(request: NextRequest) {
+  // Skip middleware for API and auth routes
+  if (request.nextUrl.pathname.startsWith('/api/auth')) {
+    return NextResponse.next()
+  }
+
   const session = await auth()
   const isLoggedIn = !!session?.user
   const pathname = request.nextUrl.pathname
@@ -18,9 +23,6 @@ async function middleware(request: NextRequest) {
   const pathnameWithoutLocale = pathname.replace(`/${locale}`, '')
 
   if (PUBLIC_PATHS.some((path) => pathnameWithoutLocale.startsWith(path))) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL(`/${locale}`, request.url))
-    }
     return intlMiddleware(request)
   }
 
@@ -36,5 +38,5 @@ async function middleware(request: NextRequest) {
 export default middleware
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)', '/', '/(en|ru)/:path*'],
+  matcher: ['/((?!_next|.*\\.|api/auth/callback).*)', '/', '/(en|ru)/:path*'],
 }

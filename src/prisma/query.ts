@@ -3,7 +3,11 @@ export const postQuery = {
     id: true,
     content: true,
     imageUrl: true,
-    likes: true,
+    likes: {
+      select: {
+        authorId: true,
+      },
+    },
     views: true,
     createdAt: true,
     author: {
