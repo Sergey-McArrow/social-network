@@ -3,7 +3,6 @@ import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Metadata } from 'next'
 import { ThemeProvider } from '@/providers/theme-provider'
-import { cookies } from 'next/headers'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,23 +16,30 @@ const geistMono = Geist_Mono({
   display: 'swap',
 })
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'TailGramm',
   description: 'TailGramm is a social network for your pets.',
 }
-const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const cookieStore = await cookies()
-  const lang = cookieStore.get('NEXT_LOCALE')?.value || 'en'
+
+type TRootLayoutProps = PropsWithChildren<{
+  params: { locale: string }
+}>
+
+const RootLayout: FC<TRootLayoutProps> = async ({ children, params }) => {
   return (
-    <html lang={lang}>
+    <html lang={params.locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          storageKey="theme-preference"
         >
           {children}
         </ThemeProvider>

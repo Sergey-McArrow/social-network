@@ -6,7 +6,6 @@ import bannerImg from '@/assets/icons/banner.png'
 
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
-import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 
 const LoginPage = async () => {
   const t = await getTranslations()
@@ -15,7 +14,6 @@ const LoginPage = async () => {
     <div className="container mx-auto min-h-svh p-2">
       <div className="mb-10 flex items-center justify-between">
         <Image src={logoImg.src} alt="Logo" width={80} height={30} />
-        <LanguageSwitcher />
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-evenly md:flex-row md:gap-16">

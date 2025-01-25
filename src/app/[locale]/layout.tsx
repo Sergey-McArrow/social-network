@@ -5,7 +5,9 @@ import { locales } from '../../../i18n/request'
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
+
 export const dynamic = 'force-static'
+
 export default async function LocaleLayout({
   children,
   params,
@@ -24,12 +26,8 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      {children}
+    </NextIntlClientProvider>
   )
 }
