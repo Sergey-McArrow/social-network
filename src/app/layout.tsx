@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react'
+import { FC } from 'react'
 import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Metadata } from 'next'
@@ -23,13 +23,15 @@ export const metadata: Metadata = {
   description: 'TailGramm is a social network for your pets.',
 }
 
-type TRootLayoutProps = PropsWithChildren<{
-  params: { locale: string }
-}>
+interface TRootLayoutProps {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}
 
 const RootLayout: FC<TRootLayoutProps> = async ({ children, params }) => {
+  const { locale } = await params
   return (
-    <html lang={params.locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
