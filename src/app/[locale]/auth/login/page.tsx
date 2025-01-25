@@ -1,11 +1,8 @@
-import { signIn } from '@/auth'
-import googleImg from '@/assets/icons/loginIcons/google.svg'
-import facebookImg from '@/assets/icons/loginIcons/facebook.svg'
 import logoImg from '@/assets/icons/TailBook_ecosystem.png'
 import bannerImg from '@/assets/icons/banner.png'
-
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
+import { SocialAuthButtons } from '@/components/auth/social-auth-buttons'
 
 const LoginPage = async () => {
   const t = await getTranslations()
@@ -29,33 +26,10 @@ const LoginPage = async () => {
             <p className="mx-auto w-56 p-2 text-center text-xl sm:w-full md:p-8">
               {t('index.bannerText')}
             </p>
-            <div className="">
-              <h1 className="mb-8 text-center text-xl">{t('auth.signIn')}</h1>
-              <div className="mx-auto flex w-1/2 justify-between">
-                <form
-                  action={async () => {
-                    'use server'
-                    await signIn('google', { redirectTo: '/' })
-                  }}
-                >
-                  <button>
-                    <Image
-                      src={googleImg.src}
-                      alt="Google"
-                      width={48}
-                      height={48}
-                    />
-                  </button>
-                </form>
-                <button>
-                  <Image
-                    src={facebookImg.src}
-                    alt="Facebook"
-                    width={48}
-                    height={48}
-                    className="cursor-not-allowed opacity-50"
-                  />
-                </button>
+            <div className="flex justify-center">
+              <div className="">
+                <h1 className="mb-8 text-center text-xl">{t('auth.signIn')}</h1>
+                <SocialAuthButtons />
               </div>
             </div>
           </div>

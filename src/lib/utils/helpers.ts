@@ -1,3 +1,5 @@
+import { enUS, ruRU } from '@clerk/localizations'
+
 /**
  * Extract initials from a name string
  * @param name - The full name to extract initials from
@@ -23,4 +25,15 @@ export const formatDate = (timestamp: string) => {
   }
 
   return date.toLocaleDateString('en-GB', options)
+}
+
+export const getLocalization = (locale: string) => {
+  switch (locale) {
+    case 'en':
+      return enUS
+    case 'ru':
+      return ruRU
+    default:
+      return enUS
+  }
 }

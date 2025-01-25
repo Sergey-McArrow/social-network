@@ -1,18 +1,18 @@
 'use server'
 
-import { auth } from '@/auth'
+import { auth } from '@clerk/nextjs'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
 import { deleteFile, uploadFile } from '@/lib/gcloud'
 
-export type ProfileFormData = {
+export type TProfileFormData = {
   name: string
   website?: string
   bio?: string
   userImage?: string
 }
 
-export type ProfileFormState = {
+export type TProfileFormState = {
   errors?: {
     name?: string[]
     website?: string[]
@@ -23,87 +23,76 @@ export type ProfileFormState = {
   message?: string
 }
 
-export async function updateProfileAction(
-  _prevState: ProfileFormState | null,
+export const updateProfileAction = async (
+  prevState: TProfileFormState | null,
   formData: FormData
-): Promise<ProfileFormState> {
-  const session = await auth()
-
-  if (!session?.user?.email) {
-    return {
-      errors: {
-        _form: ['Not authenticated'],
-      },
-    }
-  }
-  const userFromDb = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-    select: {
-      userImage: true,
-    },
-  })
-  const data: ProfileFormData = {
-    name: formData.get('username') as string,
-    website: formData.get('website') as string,
-    bio: formData.get('about') as string,
-  }
-
-  const avatarFile = formData.get('avatar') as File
-  if (avatarFile?.size > 0) {
-    try {
-      console.log(userFromDb?.userImage)
-      if (userFromDb?.userImage)
-        await deleteFile(userFromDb?.userImage, 'avatars')
-      data.userImage = await uploadFile(avatarFile, 'avatars')
-    } catch (err) {
-      console.log(err)
-
+): Promise<TProfileFormState> => {
+  try {
+    const { userId } = auth()
+    if (!userId) {
       return {
         errors: {
-          userImage: ['Failed to upload avatar'],
+          _form: ['User not authenticated'],
         },
       }
     }
-  }
 
-  const errors: ProfileFormState['errors'] = {}
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    })
 
-  if (!data.name || data.name.length < 3) {
-    errors.name = ['Name must be at least 3 characters long']
-  }
-
-  if (data.website && !data.website.startsWith('https://')) {
-    errors.website = ['Website must start with https://']
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return {
-      errors,
+    if (!user) {
+      return {
+        errors: {
+          _form: ['User not found'],
+        },
+      }
     }
-  }
-  console.log({ data })
 
-  try {
+    const name = formData.get('name') as string
+    const website = formData.get('website') as string
+    const bio = formData.get('bio') as string
+    const userImage = formData.get('userImage') as File
+
+    if (!name) {
+      return {
+        errors: {
+          name: ['Name is required'],
+        },
+      }
+    }
+
+    let userImageUrl = user.userImage
+
+    if (userImage && userImage.size > 0) {
+      if (user.userImage) {
+        await deleteFile(user.userImage)
+      }
+      userImageUrl = await uploadFile(userImage)
+    }
+
     await prisma.user.update({
-      where: {
-        email: session.user.email,
+      where: { id: userId },
+      data: {
+        name,
+        website,
+        bio,
+        userImage: userImageUrl,
       },
-      data,
     })
 
     revalidatePath('/profile')
-    revalidatePath('/profile/edit')
+    revalidatePath(`/${user.locale}/profile`)
 
     return {
       message: 'Profile updated successfully',
     }
-  } catch (err) {
-    console.log(err)
-
+  } catch (error) {
+    console.error('Error updating profile:', error)
     return {
-      errors,
+      errors: {
+        _form: [error instanceof Error ? error.message : 'Failed to update profile'],
+      },
     }
   }
 }

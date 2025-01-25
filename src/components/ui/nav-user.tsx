@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  BadgeCheck,
-  ChevronsUpDown,
-  LogOut,
-} from 'lucide-react'
+import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -22,17 +18,20 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { User } from 'next-auth'
 import { getInitials } from '@/lib/utils/helpers'
 import Link from 'next/link'
-import { signOut } from 'next-auth/react'
+import { TClerkUser } from '@/types/TClerkUser'
+import { useClerk } from '@clerk/nextjs'
+import { useParams } from 'next/navigation'
 
 type TNavUserProps = {
-  user: User
+  user: TClerkUser
 }
 
 export function NavUser({ user }: TNavUserProps) {
   const { isMobile } = useSidebar()
+  const { signOut } = useClerk()
+  const params = useParams()
 
   return (
     <SidebarMenu>
@@ -45,16 +44,18 @@ export function NavUser({ user }: TNavUserProps) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
-                  src={user.image ?? undefined}
-                  alt={user.name ?? ''}
+                  src={user.imageUrl ?? undefined}
+                  alt={user.fullName ?? ''}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {getInitials(user.name)}
+                  {getInitials(user.fullName)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user.fullName}</span>
+                <span className="truncate text-xs">
+                  {user.emailAddresses[0].emailAddress}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -69,16 +70,20 @@ export function NavUser({ user }: TNavUserProps) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
-                    src={user.image ?? undefined}
-                    alt={user.name ?? ''}
+                    src={user.imageUrl ?? undefined}
+                    alt={user.fullName ?? ''}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {getInitials(user.name)}
+                    {getInitials(user.fullName)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">
+                    {user.fullName}
+                  </span>
+                  <span className="truncate text-xs">
+                    {user.emailAddresses[0].emailAddress}
+                  </span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -95,7 +100,9 @@ export function NavUser({ user }: TNavUserProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => signOut({ callbackUrl: '/auth/login' })}
+              onClick={() =>
+                signOut({ redirectUrl: `/${params.locale}/auth/login` })
+              }
               className="cursor-pointer"
             >
               <LogOut />

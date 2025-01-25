@@ -1,26 +1,35 @@
-import { auth } from '@/auth'
 import { prisma } from '@/prisma'
 import { ProfileView } from '@/components/profile/profile-view'
+import { currentUser } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
-const ProfilePage = async () => {
-  const session = await auth()
-  console.log('Session:', session)
-  if (!session?.user?.email) {
-    return <div>You must be logged in to view this page.</div>
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+type TProfilePageProps = {
+  params: { locale: string }
+}
+
+const ProfilePage: React.FC<TProfilePageProps> = async ({ params }) => {
+  const user = await currentUser()
+
+  if (!user?.emailAddresses?.[0]?.emailAddress) {
+    redirect(`/${params.locale}/auth/login`)
   }
-  const user = await prisma.user.findUnique({
+
+  const dbUser = await prisma.user.findUnique({
     where: {
-      email: session?.user.email || '',
+      email: user.emailAddresses[0].emailAddress,
     },
   })
 
-  if (!user) {
-    throw new Error('User not found')
+  if (!dbUser) {
+    redirect(`/${params.locale}/auth/login`)
   }
 
   return (
     <div className="container mx-auto p-4">
-      <ProfileView user={user} />
+      <ProfileView user={dbUser} />
     </div>
   )
 }

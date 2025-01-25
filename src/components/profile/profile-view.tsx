@@ -66,6 +66,7 @@ export function ProfileView({ user }: ProfileViewProps) {
               })}
             </span>
           </div>
+          <p>{user?.bio}</p>
         </div>
       </CardContent>
     </Card>

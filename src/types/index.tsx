@@ -1,4 +1,4 @@
-import { User } from 'next-auth'
+import { TClerkUser } from './TClerkUser'
 
 export interface TChatMessage {
   sender: string
@@ -18,11 +18,11 @@ export interface TUserStatus {
   lastSeen: string
 }
 
-export interface TUserWithStatus extends User, TUserStatus {}
+export interface TUserWithStatus extends TClerkUser, TUserStatus {}
 
 export interface TUserListProps {
   users: TUserWithStatus[]
   currentUserId?: string
-  onSelectUser: (user: User) => void
+  onSelectUser: (user: TClerkUser) => void
   loading?: boolean
 }

@@ -5,10 +5,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
 } from '@/components/ui/sidebar'
 import { NavMain } from '@/components/ui/nav-main'
-import { useSession } from 'next-auth/react'
+import { useUser } from '@clerk/nextjs'
 import { NavUser } from '@/components/ui/nav-user'
 import logoImg from '@/assets/icons/TailBook_ecosystem.png'
 import Image from 'next/image'
@@ -17,8 +16,8 @@ import { LanguageSwitcher } from '../layout/LanguageSwitcher'
 import { ThemeSwitcher } from '../layout/theme-switcher'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession()
-  if (!session?.user) return null
+  const { user } = useUser()
+  if (!user) return null
 
   return (
     <Sidebar collapsible="icon" {...props} className="max-h-svh">
@@ -35,9 +34,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={MAIN_NAV_ITEMS} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={session?.user} />
+        <NavUser user={user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

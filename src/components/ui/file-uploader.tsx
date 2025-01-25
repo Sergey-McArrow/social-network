@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Dispatch, FC, JSX, SetStateAction, SVGProps } from 'react'
 import { uploadPostImage } from '@/actions/uploadPostImage'
-import { useSession } from 'next-auth/react'
+import { useUser } from '@clerk/nextjs'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
 
@@ -13,8 +13,11 @@ type TFileUploaderProps = {
 }
 
 export const FileUploader: FC<TFileUploaderProps> = ({ setImageUrl }) => {
-  const { data: session } = useSession()
+  const { user } = useUser()
   const t = useTranslations('addPost')
+  
+  if (!user) return null
+
   return (
     <form
       action={async (formData: FormData) => {
@@ -29,23 +32,19 @@ export const FileUploader: FC<TFileUploaderProps> = ({ setImageUrl }) => {
       <Card>
         <CardContent className="space-y-4 p-6">
           <div className="flex flex-col items-center gap-1 rounded-lg border-2 border-dashed border-gray-200 p-6">
-            <FileIcon className="h-12 w-12" />
-            <span className="text-sm font-medium text-gray-500">
+            <FileIcon className="h-10 w-10 fill-current" />
+            <Label htmlFor="picture" className="text-sm font-medium">
               {t('dragAndDrop')}
-            </span>
-            <span className="text-xs text-gray-500">{t('imageType')}</span>
-          </div>
-          <div className="space-y-2 text-sm">
-            <Label htmlFor="file" className="text-sm font-medium">
-              {t('file')}
             </Label>
-            <Input id="file" name="file" type="file" accept="image/*,video/*" />
-            <input
-              type="hidden"
-              name="userId"
-              value={session?.user?.email ?? ''}
-            />
+            <p className="text-xs text-muted-foreground">{t('imageTypes')}</p>
           </div>
+          <Input
+            id="picture"
+            type="file"
+            name="image"
+            accept="image/*"
+            className="cursor-pointer"
+          />
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">
@@ -62,8 +61,6 @@ function FileIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

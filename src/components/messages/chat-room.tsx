@@ -1,7 +1,6 @@
 'use client'
 
 import { database } from '@/lib/firebase'
-import { User } from 'next-auth'
 import { useTranslations } from 'next-intl'
 import { FC, FormEvent, useEffect, useRef, useState } from 'react'
 import {
@@ -15,35 +14,43 @@ import {
   onDisconnect,
   update,
 } from 'firebase/database'
-import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '../ui/card'
 import { Input } from '../ui/input'
 import { TChatMessage, TUserWithStatus } from '@/types'
 import { MessageItem } from './message-item'
 import { UserList } from './user-list'
+import { useUser } from '@clerk/nextjs'
 
 interface ChatRoomProps {
-  users: User[]
+  users: TClerkUser[]
+}
+
+type TClerkUser = {
+  id: string
+  firstName?: string | null
+  lastName?: string | null
+  imageUrl: string
+  emailAddresses: { emailAddress: string }[]
 }
 
 export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
-  const { data: session } = useSession()
+  const { user } = useUser()
   const t = useTranslations('messages')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const [chatRoom, setChatRoom] = useState('')
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState<TChatMessage[]>([])
-  const [chatPartner, setChatPartner] = useState<User | null>(null)
+  const [chatPartner, setChatPartner] = useState<TClerkUser | null>(null)
   const [usersOnline, setUsersOnline] = useState<TUserWithStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const getOrCreateChat = async (user: User) => {
-    if (!session?.user?.id) return
+  const getOrCreateChat = async (user: TClerkUser) => {
+    if (!user?.id) return
 
-    const user1Id = session.user.id
+    const user1Id = user.id
     const user2Id = user.id
     if (!user1Id || !user2Id) return
     setChatPartner(user)
@@ -77,7 +84,7 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
       const messagesRef = ref(database, `chats/${chatRoom}/messages`)
       const newMessageRef = push(messagesRef)
       const messageData: TChatMessage = {
-        sender: session?.user?.id ?? '',
+        sender: user?.id ?? '',
         message: newMessage.trim(),
         timestamp: new Date().toISOString(),
       }
@@ -98,9 +105,9 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   }, [messages])
 
   useEffect(() => {
-    if (!session?.user?.id) return
+    if (!user?.id) return
 
-    const userStatusRef = ref(database, `users/${session.user.id}`)
+    const userStatusRef = ref(database, `users/${user.id}`)
     const userStatusDatabaseRef = ref(database, '.info/connected')
 
     const updateUserStatus = (status: 'online' | 'offline') => {
@@ -125,7 +132,7 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
       unsubscribe()
       updateUserStatus('offline')
     }
-  }, [session?.user?.id])
+  }, [user?.id])
 
   useEffect(() => {
     const usersRef = ref(database, 'users')
@@ -185,7 +192,7 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
     return () => unsubscribe()
   }, [chatRoom])
 
-  if (!session) return null
+  if (!user) return null
 
   if (error) {
     return (
@@ -207,7 +214,7 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
               lastSeen: onlineUser?.lastSeen ?? new Date().toISOString(),
             }
           })}
-          currentUserId={session.user.id}
+          currentUserId={user.id}
           onSelectUser={getOrCreateChat}
           loading={loading}
         />
@@ -220,9 +227,9 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
                   <MessageItem
                     key={index}
                     message={message}
-                    isCurrentUser={message.sender === session.user.id}
-                    userImage={session.user.image}
-                    partnerImage={chatPartner?.image}
+                    isCurrentUser={message.sender === user.id}
+                    userImage={user.imageUrl}
+                    partnerImage={chatPartner?.imageUrl}
                   />
                 ))
               ) : (

@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from '@/auth'
+import { auth } from '@clerk/nextjs'
 import { z } from 'zod'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
@@ -12,51 +12,55 @@ const PostSchema = z.object({
 
 type PostInput = z.infer<typeof PostSchema>
 
-export async function addNewPostAction(
-  _state: {
-    status: string
-    message?: string
-    data?: PostInput
-    errors?: { message: string }[]
-  } | null,
+type PostState = {
+  status: string
+  message?: string
+  data?: PostInput
+  errors?: { message: string }[]
+}
+
+export const addNewPostAction = async (
+  prevState: PostState | null,
   formData: FormData
-) {
+) => {
   try {
-    const session = await auth()
-
-    const validatedFields = PostSchema.parse({
-      imageUrl: formData.get('imageUrl'),
-      content: formData.get('content'),
-    })
-
-    if (!session?.user?.id) {
+    const { userId } = auth()
+    if (!userId) {
       return {
         status: 'error',
         message: 'User not authenticated',
       }
     }
 
-    await prisma.post.create({
+    const validatedFields = PostSchema.parse({
+      imageUrl: formData.get('imageUrl'),
+      content: formData.get('content'),
+    })
+
+    const post = await prisma.post.create({
       data: {
         ...validatedFields,
-        authorId: session.user.id,
+        authorId: userId,
       },
     })
-    revalidatePath('/create')
+
+    revalidatePath('/')
+
     return {
       status: 'success',
-      data: validatedFields,
+      message: 'Post created successfully',
+      data: post,
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
         status: 'error',
         errors: error.errors.map((err) => ({
-          path: err.path.join('.'),
           message: err.message,
         })),
       }
     }
+
     return {
       status: 'error',
       message: error instanceof Error ? error.message : 'Something went wrong',
