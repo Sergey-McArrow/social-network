@@ -1,4 +1,4 @@
-import { currentUser } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs/server'
 import { AddPostDialog } from '@/components/ui/add-post-dialog'
 import { PostCard } from '@/components/ui/post-card'
 import { prisma } from '@/prisma'
@@ -7,14 +7,15 @@ import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 
 type TCreatePageProps = {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 const CreatePage: React.FC<TCreatePageProps> = async ({ params }) => {
+  const { locale } = await params
   const user = await currentUser()
-  
+
   if (!user) {
-    redirect(`/${params.locale}/auth/login`)
+    redirect(`/${locale}/auth/login`)
   }
 
   const t = await getTranslations('Post')
