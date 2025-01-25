@@ -7,10 +7,11 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 type TProfilePageProps = {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 const ProfilePage: React.FC<TProfilePageProps> = async ({ params }) => {
+  const { locale } = await params
   const user = await currentUser()
   const session = await auth()
 
@@ -29,7 +30,7 @@ const ProfilePage: React.FC<TProfilePageProps> = async ({ params }) => {
   })
 
   if (!dbUser) {
-    redirect(`/${params.locale}/auth/login`)
+    redirect(`/${locale}/auth/login`)
   }
 
   return (
