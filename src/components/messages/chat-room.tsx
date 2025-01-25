@@ -21,18 +21,19 @@ import { TChatMessage, TUserWithStatus } from '@/types'
 import { MessageItem } from './message-item'
 import { UserList } from './user-list'
 import { useUser } from '@clerk/nextjs'
+import { User } from '@prisma/client'
 
 interface ChatRoomProps {
-  users: TClerkUser[]
+  users: User[]
 }
 
-type TClerkUser = {
-  id: string
-  firstName?: string | null
-  lastName?: string | null
-  imageUrl: string
-  emailAddresses: { emailAddress: string }[]
-}
+// type TClerkUser = {
+//   id: string
+//   firstName?: string | null
+//   lastName?: string | null
+//   imageUrl: string
+//   emailAddresses: { emailAddress: string }[]
+// }
 
 export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   const { user } = useUser()
@@ -42,12 +43,12 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   const [chatRoom, setChatRoom] = useState('')
   const [newMessage, setNewMessage] = useState('')
   const [messages, setMessages] = useState<TChatMessage[]>([])
-  const [chatPartner, setChatPartner] = useState<TClerkUser | null>(null)
+  const [chatPartner, setChatPartner] = useState<User | null>(null)
   const [usersOnline, setUsersOnline] = useState<TUserWithStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const getOrCreateChat = async (user: TClerkUser) => {
+  const getOrCreateChat = async (user: User) => {
     if (!user?.id) return
 
     const user1Id = user.id
@@ -229,7 +230,7 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
                     message={message}
                     isCurrentUser={message.sender === user.id}
                     userImage={user.imageUrl}
-                    partnerImage={chatPartner?.imageUrl}
+                    partnerImage={chatPartner?.image}
                   />
                 ))
               ) : (

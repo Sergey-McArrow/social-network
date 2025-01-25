@@ -1,18 +1,20 @@
 import { EditForm } from '@/components/profile/edit-profile-form'
 import { getTranslations } from 'next-intl/server'
-import { currentUser } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs/server'
 import { prisma } from '@/prisma'
 import { redirect } from 'next/navigation'
 
 type TEditPageProps = {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 const EditPage: React.FC<TEditPageProps> = async ({ params }) => {
+  const { locale } = await params
+
   const user = await currentUser()
-  
+
   if (!user?.emailAddresses?.[0]?.emailAddress) {
-    redirect(`/${params.locale}/auth/login`)
+    redirect(`/${locale}/auth/login`)
   }
 
   const dbUser = await prisma.user.findUnique({
@@ -22,7 +24,7 @@ const EditPage: React.FC<TEditPageProps> = async ({ params }) => {
   })
 
   if (!dbUser) {
-    redirect(`/${params.locale}/auth/login`)
+    redirect(`/${locale}/auth/login`)
   }
 
   const t = await getTranslations('profile')

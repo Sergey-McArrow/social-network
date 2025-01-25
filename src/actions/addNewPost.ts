@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 import { z } from 'zod'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
@@ -20,11 +20,11 @@ type PostState = {
 }
 
 export const addNewPostAction = async (
-  prevState: PostState | null,
+  _prevState: PostState | null,
   formData: FormData
 ) => {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return {
         status: 'error',

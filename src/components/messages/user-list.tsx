@@ -52,9 +52,12 @@ export const UserList: FC<TUserListProps> = ({
                 >
                   <div className="relative">
                     <Avatar>
-                      <AvatarImage src={user.imageUrl} alt={user.firstName || ''} />
+                      <AvatarImage
+                        src={user.image ?? undefined}
+                        alt={user.name || ''}
+                      />
                       <AvatarFallback>
-                        {user.firstName?.[0]?.toUpperCase() || '?'}
+                        {user.name?.[0]?.toUpperCase() || '?'}
                       </AvatarFallback>
                     </Avatar>
                     <span
@@ -65,9 +68,7 @@ export const UserList: FC<TUserListProps> = ({
                       }`}
                     />
                   </div>
-                  <span className="truncate">
-                    {user.firstName} {user.lastName}
-                  </span>
+                  <span className="truncate">{user.name}</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

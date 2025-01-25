@@ -1,4 +1,4 @@
-import { TClerkUser } from './TClerkUser'
+import { User } from '@prisma/client'
 
 export interface TChatMessage {
   sender: string
@@ -18,11 +18,11 @@ export interface TUserStatus {
   lastSeen: string
 }
 
-export interface TUserWithStatus extends TClerkUser, TUserStatus {}
+export interface TUserWithStatus extends User, TUserStatus {}
 
 export interface TUserListProps {
   users: TUserWithStatus[]
   currentUserId?: string
-  onSelectUser: (user: TClerkUser) => void
+  onSelectUser: (user: User) => void
   loading?: boolean
 }

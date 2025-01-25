@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/prisma'
 import { revalidatePath } from 'next/cache'
 import { deleteFile, uploadFile } from '@/lib/gcloud'
@@ -28,7 +28,7 @@ export const updateProfileAction = async (
   formData: FormData
 ): Promise<TProfileFormState> => {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return {
         errors: {
@@ -66,9 +66,9 @@ export const updateProfileAction = async (
 
     if (userImage && userImage.size > 0) {
       if (user.userImage) {
-        await deleteFile(user.userImage)
+        await deleteFile(user.userImage, 'users')
       }
-      userImageUrl = await uploadFile(userImage)
+      userImageUrl = await uploadFile(userImage, 'users')
     }
 
     await prisma.user.update({
@@ -82,7 +82,6 @@ export const updateProfileAction = async (
     })
 
     revalidatePath('/profile')
-    revalidatePath(`/${user.locale}/profile`)
 
     return {
       message: 'Profile updated successfully',
@@ -91,7 +90,9 @@ export const updateProfileAction = async (
     console.error('Error updating profile:', error)
     return {
       errors: {
-        _form: [error instanceof Error ? error.message : 'Failed to update profile'],
+        _form: [
+          error instanceof Error ? error.message : 'Failed to update profile',
+        ],
       },
     }
   }
