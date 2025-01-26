@@ -39,6 +39,13 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
   const [usersOnline, setUsersOnline] = useState<TUserWithStatus[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const getOrCreateChat = async (user: User) => {
     if (!session?.user?.id) return
@@ -197,59 +204,75 @@ export const ChatRoom: FC<ChatRoomProps> = ({ users }) => {
 
   return (
     <section className="rounded-lg bg-card p-4 md:col-span-2">
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-4">
-        <UserList
-          users={users.map((u) => {
-            const onlineUser = usersOnline.find((online) => online.id === u.id)
-            return {
-              ...u,
-              status: onlineUser ? 'online' : 'offline',
-              lastSeen: onlineUser?.lastSeen ?? new Date().toISOString(),
-            }
-          })}
-          currentUserId={session.user.id}
-          onSelectUser={getOrCreateChat}
-          loading={loading}
-        />
-
-        {chatRoom ? (
-          <Card className="col-span-3 flex h-[600px] flex-col space-y-4 overflow-hidden p-4">
-            <div className="flex-1 space-y-2 overflow-y-auto">
-              {messages.length > 0 ? (
-                messages.map((message, index) => (
-                  <MessageItem
-                    key={index}
-                    message={message}
-                    isCurrentUser={message.sender === session.user.id}
-                    userImage={session.user.image}
-                    partnerImage={chatPartner?.image}
-                  />
-                ))
-              ) : (
-                <p className="text-center text-muted-foreground">
-                  {t('no_messages')}
-                </p>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <form onSubmit={handleSendMessage} className="flex gap-2">
-              <Input
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder={t('type_message')}
-                className="flex-1 px-2"
-              />
-              <Button type="submit" disabled={!newMessage.trim()}>
-                {t('send')}
-              </Button>
-            </form>
-          </Card>
-        ) : (
-          <div className="col-span-2 flex h-[600px] items-center justify-center">
-            <p className="text-muted-foreground">{t('select_conversation')}</p>
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-[250px_1fr]">
+        <div className="border-r p-4 md:border-none">
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder={t('search_users')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full"
+            />
           </div>
-        )}
+          <UserList
+            users={filteredUsers.map((u) => {
+              const onlineUser = usersOnline.find(
+                (online) => online.id === u.id
+              )
+              return {
+                ...u,
+                status: onlineUser ? 'online' : 'offline',
+                lastSeen: onlineUser?.lastSeen ?? new Date().toISOString(),
+              }
+            })}
+            currentUserId={session.user.id}
+            onSelectUser={getOrCreateChat}
+            loading={loading}
+          />
+        </div>
+        <div className="mx-5 p-4">
+          {chatRoom ? (
+            <Card className="col-span-3 flex h-[600px] flex-col space-y-4 overflow-hidden p-4">
+              <div className="flex-1 space-y-2 overflow-y-auto">
+                {messages.length > 0 ? (
+                  messages.map((message, index) => (
+                    <MessageItem
+                      key={index}
+                      message={message}
+                      isCurrentUser={message.sender === session.user.id}
+                      userImage={session.user.image}
+                      partnerImage={chatPartner?.image}
+                    />
+                  ))
+                ) : (
+                  <p className="text-center text-muted-foreground">
+                    {t('no_messages')}
+                  </p>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              <form onSubmit={handleSendMessage} className="flex gap-2">
+                <Input
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder={t('type_message')}
+                  className="flex-1 px-2"
+                />
+                <Button type="submit" disabled={!newMessage.trim()}>
+                  {t('send')}
+                </Button>
+              </form>
+            </Card>
+          ) : (
+            <Card className="flex h-[600px] flex-col items-center justify-center">
+              <p className="text-center text-muted-foreground">
+                {t('select_conversation')}
+              </p>
+            </Card>
+          )}
+        </div>
       </div>
     </section>
   )

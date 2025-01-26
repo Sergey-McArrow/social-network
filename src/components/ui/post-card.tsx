@@ -4,7 +4,7 @@ import { FC, useActionState, useEffect } from 'react'
 import { Card } from './card'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 import { Button } from './button'
-import { Eye, Heart, MessageCircle, Send } from 'lucide-react'
+import { Heart, MessageCircle, Send, Trash2 } from 'lucide-react'
 import { TPost } from '@/types/models'
 import { formatDate, getInitials } from '@/lib/utils/helpers'
 import { addOrRemoveLikeAction } from '@/actions/addOrRemoveLike'
@@ -15,6 +15,7 @@ import { useSession } from 'next-auth/react'
 import { Skeleton } from './skeleton'
 import { followOrUnfollow } from '@/actions/follow'
 import { toast } from 'sonner'
+import { deletePostAction } from '@/actions/deletePost'
 
 export const PostCard: FC<TPost> = ({
   id,
@@ -22,7 +23,6 @@ export const PostCard: FC<TPost> = ({
   content,
   imageUrl,
   comments,
-  views,
   likes,
   createdAt,
 }) => {
@@ -38,6 +38,10 @@ export const PostCard: FC<TPost> = ({
     followOrUnfollow,
     null
   )
+  const [deleteState, deleteAction, isDeleting] = useActionState(
+    deletePostAction,
+    null
+  )
 
   useEffect(() => {
     if (followState?.message) {
@@ -47,6 +51,15 @@ export const PostCard: FC<TPost> = ({
       toast.error(followState.error)
     }
   }, [followState])
+
+  useEffect(() => {
+    if (deleteState?.message) {
+      toast.success(deleteState.message)
+    }
+    if (deleteState?.error) {
+      toast.error(deleteState.error)
+    }
+  }, [deleteState])
 
   if (status === 'loading') {
     return <PostCardSkeleton />
@@ -112,10 +125,18 @@ export const PostCard: FC<TPost> = ({
             <Send />
           </button>
         </div>
-        <p className="flex items-center gap-2 px-2">
+        {/* <p className="flex items-center gap-2 px-2">
           <Eye />
           {views}
-        </p>
+        </p> */}
+        {isOwnPost ? (
+          <form action={deleteAction} className="flex items-center gap-2 px-2">
+            <input type="hidden" name="postId" value={id} />
+            <button type="submit" disabled={isDeleting}>
+              <Trash2 />
+            </button>
+          </form>
+        ) : null}
       </div>
       <div className="flex gap-2 p-2">
         <p>{likes.length} likes</p>

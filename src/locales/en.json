@@ -67,7 +67,8 @@
     "type_message": "Type your message here...",
     "error_sending": "Error sending message",
     "error_loading": "Error loading messages",
-    "you": "You"
+    "you": "You",
+    "search_users": "Search users..."
   },
   "addPost": {
     "newPost": "New Post",

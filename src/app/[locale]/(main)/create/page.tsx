@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server'
 
 const CreatePage = async () => {
   const session = await auth()
+
   const t = await getTranslations('Post')
   const posts = await prisma.post.findMany({
     where: { authorId: session?.user?.id },

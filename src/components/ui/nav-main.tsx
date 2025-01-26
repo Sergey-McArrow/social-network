@@ -18,7 +18,20 @@ export function NavMain({ items }: { items: NavItem[] }) {
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.titleKey}>
-            <Link href={item.url}>
+            <Link
+              href={
+                item.url.includes('notifications') ||
+                item.url.includes('search')
+                  ? '#'
+                  : item.url
+              }
+              className={`${
+                item.url.includes('notifications') ||
+                item.url.includes('search')
+                  ? 'pointer-events-none opacity-50'
+                  : ''
+              }`}
+            >
               <SidebarMenuButton tooltip={t(item.titleKey)}>
                 {item.icon && <item.icon />}
                 <span>{t(item.titleKey)}</span>

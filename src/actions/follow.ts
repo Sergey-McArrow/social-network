@@ -4,14 +4,14 @@ import { z } from 'zod'
 import { prisma } from '@/prisma'
 import { auth } from '@/auth'
 import { revalidatePath } from 'next/cache'
+import { TSimpleActionState } from '@/types/action'
 
 const TFollowSchema = z.string({ message: 'UserId is required' })
 
 type TFollowInput = z.infer<typeof TFollowSchema>
-type TFollowState = { message: string } | { error: string } | null
 
 export const followOrUnfollow = async (
-  _prevState: TFollowState,
+  _prevState: TSimpleActionState | null,
   formData: FormData
 ) => {
   try {
