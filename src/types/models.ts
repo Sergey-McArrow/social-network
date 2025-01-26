@@ -21,6 +21,8 @@ export type TPost = Prisma.PostGetPayload<{
         id: true
         name: true
         userImage: true
+        image: true
+        followedByIDs: true
       }
     }
     comments: {

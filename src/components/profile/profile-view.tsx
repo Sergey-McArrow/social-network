@@ -2,7 +2,13 @@ import { User } from '@prisma/client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CalendarIcon, Globe, Mail, Pencil } from 'lucide-react'
+import {
+  CalendarIcon,
+  Globe,
+  Mail,
+  Pencil,
+  User as UserIcon,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useFormatter, useTranslations } from 'next-intl'
 
@@ -66,6 +72,12 @@ export function ProfileView({ user }: ProfileViewProps) {
               })}
             </span>
           </div>
+          {user.bio ? (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <UserIcon className="h-4 w-4" />
+              <span>{user.bio}</span>
+            </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>

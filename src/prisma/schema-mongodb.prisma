@@ -94,8 +94,8 @@ model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl  String
   content   String
-  authorId  String    @db.ObjectId
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String?   @db.ObjectId
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
   likes     Like[]
   views     Int       @default(0)

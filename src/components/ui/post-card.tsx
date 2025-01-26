@@ -1,6 +1,6 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useActionState, useEffect } from 'react'
 import { Card } from './card'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 import { Button } from './button'
@@ -13,6 +13,8 @@ import { AspectRatio } from './aspect-ratio'
 import { ActionBtn } from './action-btn'
 import { useSession } from 'next-auth/react'
 import { Skeleton } from './skeleton'
+import { followOrUnfollow } from '@/actions/follow'
+import { toast } from 'sonner'
 
 export const PostCard: FC<TPost> = ({
   id,
@@ -29,27 +31,53 @@ export const PostCard: FC<TPost> = ({
     status === 'authenticated' &&
     likes.some((like) => like.authorId === session?.user?.id)
   const isOwnPost =
-    status === 'authenticated' && author.id === session?.user?.id
+    status === 'authenticated' && author?.id === session?.user?.id
+  const isFollowing = author?.followedByIDs.includes(session?.user?.id ?? '')
+
+  const [followState, followAction, isLoading] = useActionState(
+    followOrUnfollow,
+    null
+  )
+
+  useEffect(() => {
+    if (followState?.message) {
+      toast.success(followState.message)
+    }
+    if (followState?.error) {
+      toast.error(followState.error)
+    }
+  }, [followState])
 
   if (status === 'loading') {
     return <PostCardSkeleton />
   }
-
+  const btnFollowText = isFollowing ? 'Unfollow' : 'Follow'
   return (
     <Card>
       <div className="flex items-center gap-4 px-2 py-4">
         <Avatar>
-          <AvatarImage src={author.userImage ?? ''} alt={author.name ?? ''} />
-          <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
+          <AvatarImage
+            src={author?.userImage ?? author?.image ?? ''}
+            alt={author?.name ?? ''}
+          />
+          <AvatarFallback>{getInitials(author?.name ?? '')}</AvatarFallback>
         </Avatar>
-        <p> {author.name}</p>
+        <p> {author?.name}</p>
         <p className="truncate text-xs md:text-sm">
           • {formatDate(createdAt.toISOString())} •
         </p>
-        {isOwnPost ? (
-          <Button variant="ghost" className="text-sky-600 dark:text-sky-400">
-            follow
-          </Button>
+        {!isOwnPost ? (
+          <form action={followAction}>
+            <input type="hidden" name="userId" value={author?.id} />
+            <Button
+              type="submit"
+              variant="ghost"
+              className="text-sky-600 dark:text-sky-400"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Loading...' : btnFollowText}
+            </Button>
+          </form>
         ) : null}
       </div>
       <AspectRatio ratio={4 / 5} className="max-h-96 overflow-hidden">
@@ -94,7 +122,7 @@ export const PostCard: FC<TPost> = ({
         <p>{comments.length} comments</p>
       </div>
       <p className="p-2 align-baseline">
-        <span className="font-bold">{author.name}</span> {content}
+        <span className="font-bold">{author?.name}</span> {content}
       </p>
       {comments.length ? (
         <div>

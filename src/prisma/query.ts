@@ -15,6 +15,8 @@ export const postQuery = {
         id: true,
         name: true,
         userImage: true,
+        image: true,
+        followedByIDs: true,
       },
     },
     comments: {
