@@ -35,12 +35,15 @@ export const PostCard: FC<TPost> = ({
     <Card className="overflow-hidden">
       <div className="flex items-start gap-4 p-4">
         <Avatar>
-          <AvatarImage src={author.userImage ?? ''} alt={author.name ?? ''} />
-          <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
+          <AvatarImage
+            src={author?.userImage ?? author?.image ?? ''}
+            alt={author?.name ?? ''}
+          />
+          <AvatarFallback>{getInitials(author?.name ?? '')}</AvatarFallback>
         </Avatar>
         <div className="flex-1 space-y-1.5">
           <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">{author.name}</p>
+            <p className="text-sm font-medium">{author?.name}</p>
             <p className="text-sm text-muted-foreground">
               {formatDate(createdAt.toISOString())}
             </p>
@@ -88,7 +91,7 @@ export const PostCard: FC<TPost> = ({
         <p>{comments.length} comments</p>
       </div>
       <p className="p-2 align-baseline">
-        <span className="font-bold">{author.name}</span> {content}
+        <span className="font-bold">{author?.name}</span> {content}
       </p>
       {comments.length ? (
         <div>

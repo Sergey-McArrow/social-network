@@ -7,29 +7,52 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// model User {
+//   id            String    @id @default(auto()) @map("_id") @db.ObjectId
+//   name          String?
+//   email         String?   @unique
+//   emailVerified DateTime?
+//   image         String?
+//   userImage     String?
+//   website       String?
+//   bio           String?
+//   accounts      Account[]
+//   sessions      Session[]
+//   posts         Post[]
+//   comments      Comment[]
+//   likes         Like[]
+//   followedBy    User[]    @relation("UserFollows", fields: [followedByIDs], references: [id])
+//   followedByIDs String[]  @db.ObjectId
+//   following     User[]    @relation("UserFollows", fields: [followingIDs], references: [id])
+//   followingIDs  String[]  @db.ObjectId
+
+//   Authenticator Authenticator[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  email         String          @unique
   name          String?
-  email         String?   @unique
-  emailVerified DateTime?
   image         String?
-  userImage     String?
-  website       String?
-  bio           String?
-  accounts      Account[]
-  sessions      Session[]
+  clerkUserId   String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   posts         Post[]
   comments      Comment[]
   likes         Like[]
-  followedBy    User[]    @relation("UserFollows", fields: [followedByIDs], references: [id])
-  followedByIDs String[]  @db.ObjectId
-  following     User[]    @relation("UserFollows", fields: [followingIDs], references: [id])
-  followingIDs  String[]  @db.ObjectId
-
+  followedBy    User[]          @relation("UserFollows", fields: [followedByIDs], references: [id])
+  followedByIDs String[]        @db.ObjectId
+  following     User[]          @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs  String[]        @db.ObjectId
+  Account       Account[]
+  Session       Session[]
   Authenticator Authenticator[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userImage     String?
+  website       String?
+  bio           String?
 }
 
 model Account {
@@ -94,8 +117,8 @@ model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl  String
   content   String
-  authorId  String    @db.ObjectId
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String?   @db.ObjectId
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
   comments  Comment[]
   likes     Like[]
   views     Int       @default(0)

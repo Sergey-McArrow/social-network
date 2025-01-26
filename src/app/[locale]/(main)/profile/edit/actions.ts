@@ -24,7 +24,7 @@ export type TProfileFormState = {
 }
 
 export const updateProfileAction = async (
-  prevState: TProfileFormState | null,
+  _prevState: TProfileFormState | null,
   formData: FormData
 ): Promise<TProfileFormState> => {
   try {

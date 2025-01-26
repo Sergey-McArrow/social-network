@@ -25,7 +25,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  trailingSlash: true,
+  // trailingSlash: true,
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/api/webhooks/',
+  //       destination: '/api/webhooks',
+  //       permanent: false,
+  //     },
+  //   ]
+  // },
 }
 
 export default withNextIntl(nextConfig)

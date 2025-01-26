@@ -22,7 +22,7 @@ export const SocialAuthButtons = () => {
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn.authenticateWithRedirect({
       strategy,
-      redirectUrl: '/sign-up/sso-callback',
+      redirectUrl: '/sso-callback',
       redirectUrlComplete: `/${params.locale ?? 'en'}`,
     })
   }
@@ -38,6 +38,7 @@ export const SocialAuthButtons = () => {
       >
         <Image src={facebookImg.src} alt="Facebook" width={48} height={48} />
       </button>
+      <div id="clerk-captcha"></div>
     </div>
   )
 }

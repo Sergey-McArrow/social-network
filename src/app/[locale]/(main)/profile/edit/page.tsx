@@ -14,6 +14,8 @@ const EditPage: React.FC<TEditPageProps> = async ({ params }) => {
   const user = await currentUser()
 
   if (!user?.emailAddresses?.[0]?.emailAddress) {
+    return <div> User not found </div>
+
     redirect(`/${locale}/auth/login`)
   }
 
@@ -24,7 +26,7 @@ const EditPage: React.FC<TEditPageProps> = async ({ params }) => {
   })
 
   if (!dbUser) {
-    redirect(`/${locale}/auth/login`)
+    return <div> User not found </div>
   }
 
   const t = await getTranslations('profile')

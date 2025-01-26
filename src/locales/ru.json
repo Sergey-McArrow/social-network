@@ -67,7 +67,8 @@
     "partner": "Собеседник",
     "typeMessage": "Введите сообщение...",
     "noMessages": "Нет сообщений",
-    "startConversation": "Начать диалог"
+    "startConversation": "Начать диалог",
+    "noUsers": "Пользователи не найдены"
   },
   "addPost": {
     "newPost": "Новый пост",

@@ -1,10 +1,11 @@
 import { postQuery } from '@/prisma/query'
 import { prisma } from '@/prisma'
 import { PostCard } from '@/components/ui/post-card'
+
 const HomePage = async () => {
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: 'desc' },
-    ...postQuery,
+    select: postQuery.select,
   })
 
   return (
